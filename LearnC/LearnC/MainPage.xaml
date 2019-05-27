@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:LearnC"
+             x:Class="LearnC.MainPage"
+             Style="{DynamicResource Key=pageStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="buttonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="DodgerBlue"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid x:Name="chapters" Margin="5" VerticalOptions="FillAndExpand">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button x:Name="chapter1" Style="{DynamicResource Key=buttonStyle}" 
+                Clicked="Chapter1_Clicked"
+                Text="Глава 1" Grid.Column="0" Grid.Row="0"/>
+        <Button x:Name="chapter2" Style="{DynamicResource Key=buttonStyle}" 
+                Clicked="Chapter2_Clicked"
+                Text="Глава 2" Grid.Column="1" Grid.Row="0"/>
+        <Button x:Name="chapter3" Style="{DynamicResource Key=buttonStyle}" 
+                Clicked="Chapter3_Clicked"
+                Text="Глава 3" Grid.Column="0" Grid.Row="1"/>
+        <Button x:Name="chapter4" Style="{DynamicResource Key=buttonStyle}" 
+                Clicked="Chapter4_Clicked"
+                Text="Глава 4" Grid.Column="1" Grid.Row="1"/>
+        <Button x:Name="chapter5" Style="{DynamicResource Key=buttonStyle}" 
+                Clicked="Chapter5_Clicked"
+                Text="Глава 5" Grid.Column="0" Grid.Row="2"/>
+        <Button x:Name="chapter6" Style="{DynamicResource Key=buttonStyle}" 
+                Clicked="Chapter6_Clicked"
+                Text="Глава 6" Grid.Column="1" Grid.Row="2"/>
+    </Grid>
+</ContentPage>
