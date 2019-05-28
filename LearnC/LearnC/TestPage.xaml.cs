@@ -16,30 +16,33 @@ namespace LearnC
 
         Dictionary<string, (bool[], bool[])> Answers { get; set; }
 
-        void SetAnswers(in bool[][] correctAnswers, in Model.Test test)
+        void SetAnswers(in Model.Test test)
         {
             Answers = new Dictionary<string, (bool[], bool[])>();
 
             for (int i = 0; i < test.Quastions.Keys.ToArray().Length; i++)
             {
                 bool[] userAnswers = new bool[test.Answers[i].Length],
-                    rightAnswers = test.Answers[i];
-                for (int j = 0; j < rightAnswers.Length; j++)
+                    correctAnswers = test.Answers[i];
+                for (int j = 0; j < correctAnswers.Length; j++)
                     userAnswers[j] = false;
                 Answers.Add(test.Quastions.Keys.ToArray()[i],
-                    (rightAnswers, userAnswers));
+                    (correctAnswers, userAnswers));
             }
 
         }
 
         public TestPage(Model.Test test)
         {
+            
             int n = 0;
             try
             {
                 StackLayout stackLayout = new StackLayout();
                 ScrollView scrollView = new ScrollView();
                 scrollView.Content = stackLayout;
+
+                SetAnswers(test);
                 n = 1;
                 foreach (var quastion in test.Quastions.Keys)
                 {
@@ -82,8 +85,21 @@ namespace LearnC
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.Center
                         };
+
+                        /*Binding binding = new Binding
+                        {
+                            Source = Answers[quastion].Item2[i],
+                            Mode = BindingMode.TwoWay
+                        };
+                        AnswerSwitchers[quastion][i].SetBinding(
+                            AnswerSwitchers[quastion][i].IsToggled, binding);*/
+
+                        AnswerSwitchers[quastion][i].IsToggled =
+                            Answers[quastion].Item2[i];
+
                         grid.Children.Add(AnswerSwitchers[quastion][i], 0, i + 1);
                         n = 10;
+
                         grid.Children.Add(new Label
                         { Text = test.Quastions[quastion][i] }, 1, i + 1);
                         n = 11;
@@ -92,6 +108,16 @@ namespace LearnC
                     stackLayout.Children.Add(grid);
                     n = 12;
                 }
+
+                Button button = new Button
+                {
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    VerticalOptions = LayoutOptions.CenterAndExpand,
+                };
+                button.Clicked += OnButtonClicked;
+
+                stackLayout.Children.Add(button);
+
                 Content = stackLayout;
                 n = 13;
                 InitializeComponent();
@@ -109,6 +135,40 @@ namespace LearnC
                 return;
             }
             
+        }
+
+        private async void OnButtonClicked(object sender, System.EventArgs e)
+        {
+            int score = 0;
+            bool flag;
+            int n = 0;
+            try
+            {
+                foreach (var question in Answers.Keys)
+                {
+                    n = 1;
+                    bool[] correctAnswers = Answers[question].Item1;
+                    //Switch[] switchers = AnswerSwitchers[question];
+                    n = 2;
+                    bool[] userAnswers =
+                        new bool[AnswerSwitchers[question].Length];
+                    n = 3;
+                    for (int i = 0; i < userAnswers.Length; i++)
+                        userAnswers[i] = AnswerSwitchers[question][i].IsToggled;
+                    n = 4;
+                    flag = true;
+                    for (int i = 0; i < userAnswers.Length; i++)
+                        if (userAnswers[i] != correctAnswers[i])
+                            flag = false;
+                    n = 5;
+                    if (flag) score++;
+                }
+            }
+            catch(Exception)
+            {
+                await DisplayAlert($"{n}", $" ", "OK");
+            }
+            await DisplayAlert("Your score is:", $"{score}", "OK");
         }
     }
 }
