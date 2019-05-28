@@ -5,12 +5,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <Style x:Key="pageStyle" TargetType="ContentPage">
-                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="BackgroundColor" Value="WhiteSmoke" />
             </Style>
 
             <Style x:Key="testStyle" TargetType="TabbedPage">
-                <Setter Property="BackgroundColor" Value="LightBlue" />
-                <Setter Property="BarBackgroundColor" Value="DarkGreen" />
+                <Setter Property="BackgroundColor" Value="WhiteSmoke" />
+                <Setter Property="BarBackgroundColor" Value="DarkKhaki" />
                 <Setter Property="BarTextColor" Value="White" />
             </Style>
         </ResourceDictionary>

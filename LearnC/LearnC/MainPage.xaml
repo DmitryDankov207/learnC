@@ -6,12 +6,17 @@
              Style="{DynamicResource Key=pageStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="buttonStyle" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="DodgerBlue"/>
+            <Style x:Name="ActiveButtonStyle" x:Key="activeButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="DarkKhaki"/>
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontSize" Value="Medium"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <Style x:Key="buttonStyle" TargetType="Button" 
+                   BasedOn="{StaticResource Key=activeButtonStyle }">
+                <Setter Property="BackgroundColor" Value="DarkGray"/>
+                <Setter Property="TextColor" Value="White"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -27,7 +32,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button x:Name="chapter1" Style="{DynamicResource Key=buttonStyle}" 
+        <Button x:Name="chapter1" Style="{DynamicResource Key=activeButtonStyle}" 
                 Clicked="Chapter1_Clicked"
                 Text="Глава 1" Grid.Column="0" Grid.Row="0"/>
         <Button x:Name="chapter2" Style="{DynamicResource Key=buttonStyle}" 

@@ -1,18 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="LearnC.Chapter">
-  <ListView x:Name="MyListView"
-            ItemsSource="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement"
-            Style="{DynamicResource pageStyle}">
-            
-    <ListView.ItemTemplate>
-        <DataTemplate>
-            <TextCell Text="{Binding .}" />
-        </DataTemplate>
-    </ListView.ItemTemplate>
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:local="clr-namespace:LearnC"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="LearnC.Chapter"
+             Style="{StaticResource Key=testStyle}">
 
-    </ListView>
-</ContentPage>
+</TabbedPage>
