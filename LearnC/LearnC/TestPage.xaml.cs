@@ -34,139 +34,87 @@ namespace LearnC
 
         public TestPage(Model.Test test)
         {
-            
-            int n = 0;
-            try
-            {
-                StackLayout stackLayout = new StackLayout();
-                ScrollView scrollView = new ScrollView();
-                scrollView.Content = stackLayout;
+            AnswerSwitchers = new Dictionary<string, Switch[]>();
+            StackLayout stackLayout = new StackLayout();
+            ScrollView scrollView = new ScrollView();
+            scrollView.Content = stackLayout;
 
-                SetAnswers(test);
-                n = 1;
-                foreach (var quastion in test.Quastions.Keys)
+            SetAnswers(test);
+            foreach (var quastion in test.Quastions.Keys)
+            {
+                Grid grid = new Grid
                 {
-                    n = 2;
-                    Grid grid = new Grid
-                    {
-                        ColumnDefinitions =
+                    ColumnDefinitions =
                         {
                             new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
                             new ColumnDefinition { Width = new GridLength(4, GridUnitType.Star) }
                         }
-                    };
-                    n = 3;
-                    grid.RowDefinitions = new RowDefinitionCollection();
-                    n = 4;
+                };
+                grid.RowDefinitions = new RowDefinitionCollection();
+                grid.RowDefinitions.Add(new RowDefinition
+                { Height = new GridLength(1, GridUnitType.Star) });
+                Label quastionLabel = new Label
+                {
+                    FontSize = 16,
+                    Text = quastion
+                };
+                grid.Children.Add(quastionLabel, 0, 0);
+                Grid.SetColumnSpan(quastionLabel, 2);
+                AnswerSwitchers.Add(quastion,
+                    new Switch[test.Quastions[quastion].Length]);
+                for (int i = 0; i < test.Quastions[quastion].Length; i++)
+                {
                     grid.RowDefinitions.Add(new RowDefinition
                     { Height = new GridLength(1, GridUnitType.Star) });
-                    Label quastionLabel = new Label
+                    AnswerSwitchers[quastion][i] = new Switch
                     {
-                        FontSize = 16,
-                        Text = quastion
+                        IsToggled = false,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
                     };
-                    grid.Children.Add(quastionLabel, 0, 0);
-                    Grid.SetColumnSpan(quastionLabel, 2);
-                    n = 5;
-                    AnswerSwitchers = new Dictionary<string, Switch[]>();
-                    n = 6;
-                    AnswerSwitchers.Add(quastion,
-                        new Switch[test.Quastions[quastion].Length]);
-                    n = 7;
-                    for (int i = 0; i < test.Quastions[quastion].Length; i++)
-                    {
-                        n = 8;
-                        grid.RowDefinitions.Add(new RowDefinition
-                        { Height = new GridLength(1, GridUnitType.Star) });
-                        n = 9;
-                        AnswerSwitchers[quastion][i] = new Switch
-                        {
-                            IsToggled = false,
-                            HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.Center
-                        };
 
-                        /*Binding binding = new Binding
-                        {
-                            Source = Answers[quastion].Item2[i],
-                            Mode = BindingMode.TwoWay
-                        };
-                        AnswerSwitchers[quastion][i].SetBinding(
-                            AnswerSwitchers[quastion][i].IsToggled, binding);*/
+                    AnswerSwitchers[quastion][i].IsToggled =
+                        Answers[quastion].Item2[i];
 
-                        AnswerSwitchers[quastion][i].IsToggled =
-                            Answers[quastion].Item2[i];
+                    grid.Children.Add(AnswerSwitchers[quastion][i], 0, i + 1);
 
-                        grid.Children.Add(AnswerSwitchers[quastion][i], 0, i + 1);
-                        n = 10;
-
-                        grid.Children.Add(new Label
-                        { Text = test.Quastions[quastion][i] }, 1, i + 1);
-                        n = 11;
-                    }
-                    grid.Margin = 5;
-                    stackLayout.Children.Add(grid);
-                    n = 12;
+                    grid.Children.Add(new Label
+                    { Text = test.Quastions[quastion][i] }, 1, i + 1);
                 }
-
-                Button button = new Button
-                {
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    VerticalOptions = LayoutOptions.CenterAndExpand,
-                };
-                button.Clicked += OnButtonClicked;
-
-                stackLayout.Children.Add(button);
-
-                Content = stackLayout;
-                n = 13;
-                InitializeComponent();
+                grid.Margin = 5;
+                stackLayout.Children.Add(grid);
             }
-            catch (Exception e)
+
+            Button button = new Button
             {
-                Content = new StackLayout
-                {
-                    Children =
-                            {
-                                new Label{Text = n.ToString() + e.Message}
-                            }
-                };
-                InitializeComponent();
-                return;
-            }
-            
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+            };
+            button.Clicked += OnButtonClicked;
+
+            stackLayout.Children.Add(button);
+
+            Content = stackLayout;
+            InitializeComponent();
         }
 
         private async void OnButtonClicked(object sender, System.EventArgs e)
         {
             int score = 0;
             bool flag;
-            int n = 0;
-            try
+
+            foreach (var question in Answers.Keys)
             {
-                foreach (var question in Answers.Keys)
-                {
-                    n = 1;
-                    bool[] correctAnswers = Answers[question].Item1;
-                    //Switch[] switchers = AnswerSwitchers[question];
-                    n = 2;
-                    bool[] userAnswers =
-                        new bool[AnswerSwitchers[question].Length];
-                    n = 3;
-                    for (int i = 0; i < userAnswers.Length; i++)
-                        userAnswers[i] = AnswerSwitchers[question][i].IsToggled;
-                    n = 4;
-                    flag = true;
-                    for (int i = 0; i < userAnswers.Length; i++)
-                        if (userAnswers[i] != correctAnswers[i])
-                            flag = false;
-                    n = 5;
-                    if (flag) score++;
-                }
-            }
-            catch(Exception)
-            {
-                await DisplayAlert($"{n}", $" ", "OK");
+                bool[] correctAnswers = Answers[question].Item1;
+                bool[] userAnswers =
+                    new bool[AnswerSwitchers[question].Length];
+                for (int i = 0; i < userAnswers.Length; i++)
+                    userAnswers[i] = AnswerSwitchers[question][i].IsToggled;
+                flag = true;
+                for (int i = 0; i < userAnswers.Length; i++)
+                    if (userAnswers[i] != correctAnswers[i])
+                        flag = false;
+                if (flag) score++;
             }
             await DisplayAlert("Your score is:", $"{score}", "OK");
         }
